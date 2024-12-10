@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 
 
-const filePath = path.resolve(process.cwd(), 'public/data.json');
+const filePath = path.resolve(process.cwd(), 'data/data.json');
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   try {

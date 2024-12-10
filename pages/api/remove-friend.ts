@@ -1,14 +1,10 @@
-import express from 'express';
 import fs from 'fs';
 import { NextApiRequest, NextApiResponse } from 'next';
 import path from 'path'; 
 import {Friend} from '@/models/friend';
 
-const app = express();
 
-app.use(express.json());
-
-const filePath = path.resolve(process.cwd(), 'public/data.json'); 
+const filePath = path.resolve(process.cwd(), 'data/data.json'); 
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
@@ -26,7 +22,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
 
     res.status(200).json({message: "Friend removed", friends});
 
-    res.status(200).json({ message: 'Friend removed', friends });
       } catch (error) {
         console.error('Chyba při aktualizaci souboru:', error); 
         res.status(500).json({ message: 'Chyba serveru při aktualizaci seznamu přátel.' });
