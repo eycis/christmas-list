@@ -1,9 +1,11 @@
 import React from "react";
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
+import { Engine } from "tsparticles-engine";
+
 
 const SnowParticles = () => {
-  const particlesInit = async (main: any) => {
+  const particlesInit = async (main: Engine) => {
     // Možnost inicializace kompletní knihovny
     await loadFull(main);
   };
