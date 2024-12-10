@@ -8,10 +8,10 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
+      fontFamily :{
+        title: ["Cinzel", "serif"],
+        text: ["Amatic SC", "sans-serif"]
+      }
     },
   },
   plugins: [],
