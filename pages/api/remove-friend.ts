@@ -1,7 +1,8 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import fs from 'fs';
 import { NextApiRequest, NextApiResponse } from 'next';
 import path from 'path'; 
+import {Friend} from '@/models/friend';
 
 const app = express();
 
@@ -18,7 +19,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     const friendsData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     let friends = friendsData.friends;
 
-    friends = friends.filter((friend: any) => friend.id !== id);
+    friends = friends.filter((friend: typeof Friend) => friend.id !== id);
 
     friendsData.friends = friends;
     fs.writeFileSync(filePath, JSON.stringify(friendsData, null, 2), 'utf-8'); // write = uložení změn do json souboru.

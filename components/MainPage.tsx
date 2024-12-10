@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import data from "@/public/data.json";
-import {friend} from "@/models/friend";
-import { response } from 'express';
+import {Friend} from "@/models/friend";
+
 
 const MainPage = () => {
-  const [friends, setFriends] = useState<typeof friend[]>([]); //pro načtení dat friend s jsonu
+  const [friends, setFriends] = useState<typeof Friend[]>([]); //pro načtení dat friend s jsonu
   const [selectedFriend, setSelectedFriend] = useState<string | null>(null);
   const [buttonVisibility, setButtonVisibility] = useState<boolean>(true);
 
@@ -54,10 +53,10 @@ const MainPage = () => {
 
   return (
     <div className='flex flex-col items-center justify-center'>
-            <h1 className='font-title text-center mt-32 text-6xl text-[#f0ece8]'> Vylosuj si jméno pro tajného ježíška </h1>
+            <h1 className='font-title text-center mt-52 text-4xl font-bold lg:text-7xl text-[#f0ece8] '> Vylosuj si jméno pro tajného ježíška </h1>
             {buttonVisibility && (
             <button 
-                className='text-4xl bg-[#f0ece8] text-[#67312a] p-5 rounded-lg font-text font-bold mt-20
+                className='text-4xl bg-[#f0ece8] text-[#67312a] p-5 rounded-lg font-text font-bold mt-20 lg:text-6xl
                 hover:bg-[#67312a] hover:text-[#f0ece8] transition-colors  duration-500'
                 onClick={pickRandomFriend}
             > 
@@ -65,8 +64,8 @@ const MainPage = () => {
             </button>
           )}
             {selectedFriend && (
-        <p className="text-white text-4xl font-title mt-32">
-          Vylosované jméno: <span className="font-bold font-text text-5xl">{selectedFriend}</span>
+        <p className="text-white text-3xl font-title mt-32">
+          Vylosované jméno: <span className="font-bold font-text text-4xl lg:text-5xl">{selectedFriend}</span>
         </p>
       )}
     </div>

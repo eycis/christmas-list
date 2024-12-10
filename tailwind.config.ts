@@ -9,7 +9,7 @@ export default {
   theme: {
     extend: {
       fontFamily :{
-        title: ["Cinzel", "serif"],
+        title: ["Dancing Script", "serif"],
         text: ["Amatic SC", "sans-serif"]
       }
     },
