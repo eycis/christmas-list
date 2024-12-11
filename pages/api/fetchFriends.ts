@@ -1,18 +1,26 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import fs from 'fs';
-import path from 'path';
+import { ref, get } from "firebase/database";
+import { db } from "@/config/firebase"; // Firebase konfigurace
+import { NextApiRequest, NextApiResponse } from "next";
 
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method === "GET") {
+    try {
+      const snapshot = await get(ref(db, "friends"));
+      const data = snapshot.val();
 
-const filePath = path.resolve(process.cwd(), 'data/data.json');
+      const friends = data
+        ? Object.entries(data).map(([key, value]) => ({
+            id: key,
+            ...(value as { name: string }), 
+          }))
+        : [];
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  try {
-    const friendsData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-    const friends = friendsData.friends;
-
-    res.status(200).json(friends);
-  } catch (error) {
-    console.error('Chyba při čtení souboru:', error);
-    res.status(500).json({ message: 'Chyba serveru při čtení seznamu přátel.' });
+      res.status(200).json(friends);
+    } catch (error) {
+      console.error("Chyba při načítání přátel:", error);
+      res.status(500).json({ message: "Chyba serveru při načítání seznamu přátel." });
+    }
+  } else {
+    res.status(405).json({ message: "Method not allowed" });
   }
 }

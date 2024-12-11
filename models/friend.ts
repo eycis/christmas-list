@@ -1,4 +1,4 @@
-export const Friend = {
-    id: 0 as number,
-    name: '' as string,
-}
+export type Friend = {
+    id: string;
+    name: string;
+  };

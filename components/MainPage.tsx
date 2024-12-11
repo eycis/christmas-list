@@ -1,55 +1,33 @@
 import React, { useEffect, useState } from 'react'
-import {Friend} from "@/models/friend";
+import { Friend } from "@/models/friend";
 
+interface MainPageProps {
+  friends: Friend[];
+  onRemoveFriend: (id: string) => void;
+}
 
-const MainPage = () => {
-  const [friends, setFriends] = useState<typeof Friend[]>([]); //pro načtení dat friend s jsonu
-  const [selectedFriend, setSelectedFriend] = useState<string | null>(null);
+const MainPage = ({friends, onRemoveFriend}: MainPageProps) => {
+
+  console.log("friends z main:", friends);
   const [buttonVisibility, setButtonVisibility] = useState<boolean>(true);
+  const [chosenFriend, setChosenFriend] = useState<Friend | null>(null);
 
-  const fetchFriends = async () => {
-    try {
-      const response = await fetch('/api/fetchFriends');
-      const data = await response.json(); 
-      setFriends(data); 
-    } catch (error) {
-      console.error('Chyba při načítání přátel:', error);
-    }
-  };
 
-  const pickRandomFriend = async () => {
-
+  const pickRandomFriend = () => {
     if (friends.length === 0) {
-      alert('Všechna jména již byla vylosována!');
+      alert("Všechna jména již byla vylosována!");
       return;
     }
 
     const randomIndex = Math.floor(Math.random() * friends.length);
-    const chosenFriend = friends[randomIndex];
+    const selectedFriend = friends[randomIndex];
 
-    setSelectedFriend(chosenFriend.name);
     setButtonVisibility(false);
-
-    try {
-      const response = await fetch('/api/remove-friend', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: chosenFriend.id }),
-      });
-
-      const data = await response.json();
-      setFriends(data.friends);
-    } catch (error) {
-      console.error('Chyba při odstraňování přítele:', error);
-    }
+    setChosenFriend(selectedFriend);
+    onRemoveFriend(String(selectedFriend.id));
+    console.log("----------------------------");
+    console.log("volá se metoda pro smazání z mainpage", selectedFriend.name, selectedFriend.id);
   };
-
-  useEffect(() => {
-    fetchFriends();
-  }, []); 
-
 
   return (
     <div className='flex flex-col items-center justify-center'>
@@ -63,11 +41,13 @@ const MainPage = () => {
             Vylosovat kamaráda 
             </button>
           )}
-            {selectedFriend && (
+
+      {chosenFriend && (
         <p className="text-white text-3xl font-title mt-32">
-          Vylosované jméno: <span className="font-bold font-text text-4xl lg:text-5xl">{selectedFriend}</span>
+          Vylosované jméno: {" "} <span className="font-bold font-text text-4xl lg:text-5xl">{chosenFriend.name}</span>
         </p>
       )}
+
     </div>
   )
 }
