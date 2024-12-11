@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, {useState } from 'react'
 import { Friend } from "@/models/friend";
 
 interface MainPageProps {
@@ -43,8 +43,8 @@ const MainPage = ({friends, onRemoveFriend}: MainPageProps) => {
           )}
 
       {chosenFriend && (
-        <p className="text-white text-3xl font-title mt-32">
-          Vylosované jméno: {" "} <span className="font-bold font-text text-4xl lg:text-5xl">{chosenFriend.name}</span>
+        <p className="text-white text-3xl font-title mt-32 px-3">
+          Vylosované jméno: {" "} <span className="font-bold font-text text-4xl lg:text-4xl">{chosenFriend.name}</span>
         </p>
       )}
 

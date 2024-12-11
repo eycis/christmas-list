@@ -1,4 +1,3 @@
-
 {
   "friends": [
     { "id": 0, "name": "Maryje" },
@@ -8,6 +7,7 @@
     { "id": 4, "name": "Henrycha" },
     { "id": 5, "name": "Tkanička" },
     { "id": 6, "name": "Dominikdo" },
-    { "id": 7, "name": "Vašek, fanoušek oblíbeného fotbalového klubu Sparta" }
+    { "id": 7, "name": "Kašev" }
   ]
 }
+
