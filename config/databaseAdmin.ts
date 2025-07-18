@@ -1,11 +1,23 @@
-// config/databaseAdmin.ts
 import admin from "firebase-admin";
-import serviceAccount from "./serviceAccountKey.json";
 
 if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
-  });
+  try {
+    let serviceAccount;
+
+    if (process.env.NODE_ENV === "production") {
+      serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_KEY!);
+    } else {
+
+      serviceAccount = require("./serviceAccountKey.json");
+    }
+
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+    });
+
+  } catch (error) {
+    console.error("❌ Firebase admin initialization failed:", error);
+  }
 }
 
 export const dbAdmin = admin.firestore();
