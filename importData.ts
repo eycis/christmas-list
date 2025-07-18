@@ -37,6 +37,7 @@ async function importFriends() {
       name: friend.name,
       email: friend.email?? "",
       selected: friend.selected,
+      hasName: friend.hasName,
     });
   }
 
