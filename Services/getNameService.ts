@@ -1,4 +1,5 @@
 export const  fetchName = async (email: string) : Promise<{data?: string, message?: string} | null> => {
+
       try {
         const response = await fetch("/api/fetch-name", {
             method: "POST",

@@ -7,7 +7,7 @@ export async function sendEmail(recipient: string, data: string)
 
     const subject = "Vylosované jméno"
 
-    const message = `Pššššt! Váš vylosovaný kamarád je: ${data}.`;
+    const message = `Pššššt! Váš vylosovaný kamarád je: ${data}. Nikomu ani muk!`;
 
     const msg = {
         to: recipient,
