@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
         const {email} = body;
 
         const snapshot = await dbAdmin.collection("friends").where("selected", "==", false).get();
-        const docs = snapshot.docs;
+        const docs = snapshot.docs.filter(doc => doc.data().email !== email);
 
         if (docs.length === 0) {
             return NextResponse.json({ message: "Seznam je prázdný." }, { status: 404 });
