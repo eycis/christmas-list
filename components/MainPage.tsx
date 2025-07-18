@@ -46,23 +46,35 @@ const MainPage = () => {
   }
 
   return (
-    <div className="relative h-screen flex flex-col lg:flex-row overflow-hidden items-center bg-[#f5f0dc]">
-      <div className='flex flex-col items-center justify-center text-center h-full w-full lg:w-2/3 px-4'>
+    <div className="relative h-screen flex flex-col lg:flex-row overflow-hidden items-center ">
+      <div className='absolute animate-fade-in inset-0 lg:hidden'>
+        <Image
+          src="/phone.jpeg"
+          alt="phone"
+          fill
+          sizes="33vw"
+          className='object-cover'
+          priority
+        />
+      </div>
+      <div className='flex flex-col items-center justify-center text-center h-full w-full lg:w-2/3 px-4 z-10'>
+
       {buttonVisibility && (
         <>
+        <p className='text-center justify-center animate-fade-in mb-4'>Kdo vybírá kamaráda?</p>
           <select  
-              className="bg-transparent border-2 border-[#2e2f29] mb-8 rounded-full px-3 py-2"
+              className="bg-transparent text-center justify-center border-2 animate-fade-in border-[#2e2f29] mb-8 rounded-full px-3 py-2"
               value={selectedRecipient ?? ""}
               onChange={(e) => setSelectedRecipient(e.target.value)}>
-              <option value = ""> -- Vyber své jméno -- </option>
+              <option value = "" > -- Vyber své jméno -- </option>
               {friendsList?.map((friend, index)=>
               (
                 <option key={index} value={friend.email}> {friend.name} </option>
               ))}
               </select>
             <button
-              className="text-xl text-[#2e2f29] p-5 font-text font-semibold lg:text-2xl
-                hover:bg-[#2e2f29] rounded-full hover:text-white transition-colors duration-500"
+              className="text-xl 	text-[#2e2f29] animate-fade-in p-5 font-text font-semibold lg:text-2xl
+                 rounded-full hover:text-[#2e2f29] bg-transparent transition-colors duration-500"
                 onClick={getRandomFriend}
             >
               Vylosovat kamaráda
