@@ -33,9 +33,10 @@ const MainPage = () => {
       const result = await fetchName(selectedRecipient);
 
       if (result?.data) {
-        console.log(result.data);
         setButtonVisibility(false);
         setChosenFriend(result.data);
+      }else{
+        window.alert("Všichni jsou již vylosováni!")
       }
     } catch (error) {
       setChosenFriend(`error: ${error}`);
