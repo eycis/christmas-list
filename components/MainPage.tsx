@@ -1,55 +1,72 @@
-import React, {useState } from 'react'
-import { Friend } from "@/models/friend";
+import React, { useEffect, useState } from 'react'
+import Image from 'next/image';
+import { fetchName } from '@/Services/getNameService';
 
-interface MainPageProps {
-  friends: Friend[];
-  onRemoveFriend: (id: string) => void;
-}
 
-const MainPage = ({friends, onRemoveFriend}: MainPageProps) => {
+const MainPage = () => {
 
-  console.log("friends z main:", friends);
   const [buttonVisibility, setButtonVisibility] = useState<boolean>(true);
-  const [chosenFriend, setChosenFriend] = useState<Friend | null>(null);
+  const [chosenFriend, setChosenFriend] = useState<string | null>(null);
 
+  const getRandomFriend = async() => {
+    try{
 
-  const pickRandomFriend = () => {
-    if (friends.length === 0) {
-      alert("Všechna jména již byla vylosována!");
-      return;
+      const result = await fetchName();
+      if(result?.data){
+        setButtonVisibility(false);
+        setChosenFriend(result.data);
+      }
+
+    }catch(error){
+      setChosenFriend(`error: ${error}`)
     }
-
-    const randomIndex = Math.floor(Math.random() * friends.length);
-    const selectedFriend = friends[randomIndex];
-
-    setButtonVisibility(false);
-    setChosenFriend(selectedFriend);
-    onRemoveFriend(String(selectedFriend.id));
-    console.log("----------------------------");
-    console.log("volá se metoda pro smazání z mainpage", selectedFriend.name, selectedFriend.id);
-  };
+  }
 
   return (
-    <div className='flex flex-col items-center justify-center'>
-            <h1 className='font-title text-center mt-52 text-4xl font-bold lg:text-7xl text-[#f0ece8] '> Vylosuj si jméno pro tajného ježíška </h1>
-            {buttonVisibility && (
-            <button 
-                className='text-4xl bg-[#f0ece8] text-[#67312a] p-5 rounded-lg font-text font-bold mt-20 lg:text-6xl
-                hover:bg-[#67312a] hover:text-[#f0ece8] transition-colors  duration-500'
-                onClick={pickRandomFriend}
-            > 
-            Vylosovat kamaráda 
+    <div className="relative h-screen flex flex-col lg:flex-row overflow-hidden items-center bg-[#f5f0dc]">
+      <div className='flex flex-col items-center justify-center text-center h-full w-full lg:w-2/3 px-4'>
+      {buttonVisibility && (
+        <>
+          <select  
+              className="bg-transparent border-2 border-[#2e2f29] rounded-full px-3 py-2"
+              id='jmeno'>
+              <option value = ""> -- Vyber své jméno -- </option>
+              {/* {nazvyProvozu?.map((nazevProvozu, index)=>
+              (
+                <option key={index} value={nazevProvozu}> {nazevProvozu} </option>
+              ))} */}
+              </select>
+            <button
+              className="text-xl text-[#2e2f29] p-5 font-text font-semiboldlg:text-2xl
+                hover:bg-[#2e2f29] rounded-full hover:text-white transition-colors duration-500"
+                onClick={getRandomFriend}
+            >
+              Vylosovat kamaráda
             </button>
+            </>)
+          }
+
+          {chosenFriend && (
+            <p className="text-[#2e2f29] text-2xl font-text mt-10">
+              Vylosované jméno:{" "}
+              <span className="font-bold font-text text-3xl">{chosenFriend}</span>
+            </p>
           )}
+        </div>
 
-      {chosenFriend && (
-        <p className="text-white text-3xl font-title mt-32 px-3">
-          Vylosované jméno: {" "} <span className="font-bold font-text text-4xl lg:text-4xl">{chosenFriend.name}</span>
-        </p>
-      )}
-
+      {/* 🖥 Obrázek vpravo na desktopu */}
+      <div className="hidden lg:block lg:w-1/3 relative min-h-screen ">
+        <Image
+          src="/map.jpg"
+          alt="Budapest map"
+          fill
+          sizes="33vw"
+          style={{ objectFit: "cover" }}
+          priority
+        />
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default MainPage
+export default MainPage;

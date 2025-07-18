@@ -1,13 +1,14 @@
 {
   "friends": [
-    { "id": 0, "name": "Maryje" },
-    { "id": 1, "name": "Dyjana" },
-    { "id": 2, "name": "Zzna" },
-    { "id": 3, "name": "Ivo" },
-    { "id": 4, "name": "Henrycha" },
-    { "id": 5, "name": "Tkanička" },
+    { "id": 0, "name": "Maryje"},
+    { "id": 1, "name": "Dyjana"},
+    { "id": 2, "name": "Zzzzzzna"},
+    { "id": 3, "name": "Ivo (65)" },
+    { "id": 4, "name": "Henrycha"},
+    { "id": 5, "name": "Tkanička ver-1.0" },
     { "id": 6, "name": "Dominikdo" },
-    { "id": 7, "name": "Kašev" }
+    { "id": 7, "name": "Kašev" },
+    { "id": 8, "name": "Annna ver.2.0" }
   ]
 }
 

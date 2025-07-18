@@ -10,8 +10,11 @@ export default {
     extend: {
       fontFamily :{
         title: ["Dancing Script", "serif"],
-        text: ["Amatic SC", "sans-serif"]
-      }
+        text: ["Inter", "serif"]
+      },
+      letterSpacing: {
+        wideTitle: '0.01em',
+      },
     },
   },
   plugins: [],
