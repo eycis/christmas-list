@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { fetchName } from '@/Services/getNameService';
 import { Friend } from '@/models/friend';
 import { getFriends } from '@/Services/getFriendsService';
 
-
 const MainPage = () => {
-
   const [buttonVisibility, setButtonVisibility] = useState<boolean>(true);
   const [chosenFriend, setChosenFriend] = useState<string | null>(null);
-  const [friendsList, setFriendsList] = useState <Friend[]>();
+  const [friendsList, setFriendsList] = useState<Friend[]>();
   const [selectedRecipient, setSelectedRecipient] = useState<string>();
 
   useEffect(() => {
@@ -19,87 +17,74 @@ const MainPage = () => {
         if (data?.data) {
           setFriendsList(data.data);
         }
-        }catch (error) {
-          console.error("záznamy nenalezeny");
-        }
+      } catch (error) {
+        console.error('záznamy nenalezeny');
+      }
     };
     fetchData();
-  },[]);
+  }, []);
 
-  const getRandomFriend = async() => {
-    try{
-        if (!selectedRecipient) {
-          alert("Prosím, vyber své jméno.");
-          return;
-        }
-        const result = await fetchName(selectedRecipient);
-      
-        if(result?.data){
-          console.log(result.data);
-          setButtonVisibility(false);
-          setChosenFriend(result.data);
-        
+  const getRandomFriend = async () => {
+    try {
+      if (!selectedRecipient) {
+        alert('Prosím, vyber své jméno.');
+        return;
+      }
+      const result = await fetchName(selectedRecipient);
+
+      if (result?.data) {
+        console.log(result.data);
+        setButtonVisibility(false);
+        setChosenFriend(result.data);
+      }
+    } catch (error) {
+      setChosenFriend(`error: ${error}`);
     }
-    }catch(error){
-      setChosenFriend(`error: ${error}`)
-    }
-  }
+  };
 
   return (
-    <div className="relative h-screen flex flex-col lg:flex-row overflow-hidden items-center ">
-      <div className='absolute animate-fade-in inset-0 lg:hidden'>
-        <Image
-          src="/phone.jpeg"
-          alt="phone"
-          fill
-          sizes="33vw"
-          className='object-cover'
-          priority
-        />
-      </div>
-      <div className='flex flex-col items-center justify-center text-center h-full w-full lg:w-2/3 px-4 z-10'>
+    <div className="relative min-h-screen w-full overflow-hidden flex items-center justify-center">
+      <Image
+        src="/phone.jpeg"
+        alt="background"
+        fill
+        priority
+        className="object-cover object-center z-0"
+      />
 
-      {buttonVisibility && (
-        <>
-        <p className='text-center justify-center animate-fade-in mb-4'>Kdo vybírá kamaráda?</p>
-          <select  
-              className="bg-transparent text-center justify-center border-2 animate-fade-in border-[#2e2f29] mb-8 rounded-full px-3 py-2"
-              value={selectedRecipient ?? ""}
-              onChange={(e) => setSelectedRecipient(e.target.value)}>
-              <option value = "" > -- Vyber své jméno -- </option>
-              {friendsList?.map((friend, index)=>
-              (
-                <option key={index} value={friend.email}> {friend.name} </option>
+      <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-xl w-full">
+        {buttonVisibility && (
+          <>
+            <p className="text-center animate-fade-in mb-4 font-text text-lg lg:text-xl text-[#2e2f29]">
+              Kdo vybírá kamaráda?
+            </p>
+            <select
+              className="bg-transparent text-center border-2 animate-fade-in border-[#2e2f29] text-[#2e2f29] mb-6 rounded-full px-4 py-2 font-text"
+              value={selectedRecipient ?? ''}
+              onChange={(e) => setSelectedRecipient(e.target.value)}
+            >
+              <option value=""> -- Vyber své jméno -- </option>
+              {friendsList?.map((friend, index) => (
+                <option key={index} value={friend.email}>
+                  {friend.name}
+                </option>
               ))}
-              </select>
+            </select>
             <button
-              className="text-xl 	text-[#2e2f29] animate-fade-in p-5 font-text font-semibold lg:text-2xl
-                 rounded-full hover:text-[#2e2f29] bg-transparent transition-colors duration-500"
-                onClick={getRandomFriend}
+              className="text-lg text-[#f24b96] tracking-wide bg-[#2e2f29] animate-fade-in px-6 py-3 font-text font-semibold lg:text-2xl rounded-full transition-colors duration-500 hover:bg-[#f24b96] hover:text-white"
+              onClick={getRandomFriend}
             >
               Vylosovat kamaráda
             </button>
-            </>)
-          }
+          </>
+        )}
 
-          {chosenFriend && (
-            <p className="text-[#2e2f29] text-2xl font-text mt-10">
-              Vylosované jméno:{" "}
-              <span className="font-bold font-text text-3xl">{chosenFriend}</span>
-            </p>
-          )}
-        </div>
-
-      {/* 🖥 Obrázek vpravo na desktopu */}
-      <div className="hidden lg:block lg:w-1/3 relative min-h-screen ">
-        <Image
-          src="/map.jpg"
-          alt="Budapest map"
-          fill
-          sizes="33vw"
-          style={{ objectFit: "cover" }}
-          priority
-        />
+        {chosenFriend && (
+          <p className="text-[#2e2f29] text-2xl font-text mt-10">
+            Vylosované jméno: 
+            <span className="font-bold text-3xl mx-3 uppercase">{chosenFriend}</span>
+          </p>
+        )}
       </div>
     </div>
   );
