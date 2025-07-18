@@ -1,22 +1,45 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
 import { fetchName } from '@/Services/getNameService';
+import { Friend } from '@/models/friend';
+import { getFriends } from '@/Services/getFriendsService';
 
 
 const MainPage = () => {
 
   const [buttonVisibility, setButtonVisibility] = useState<boolean>(true);
   const [chosenFriend, setChosenFriend] = useState<string | null>(null);
+  const [friendsList, setFriendsList] = useState <Friend[]>();
+  const [selectedRecipient, setSelectedRecipient] = useState<string>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getFriends();
+        if (data?.data) {
+          setFriendsList(data.data);
+        }
+        }catch (error) {
+          console.error("záznamy nenalezeny");
+        }
+    };
+    fetchData();
+  }, []);
 
   const getRandomFriend = async() => {
     try{
-
-      const result = await fetchName();
-      if(result?.data){
-        setButtonVisibility(false);
-        setChosenFriend(result.data);
-      }
-
+        if (!selectedRecipient) {
+          alert("Prosím, vyber své jméno.");
+          return;
+        }
+        const result = await fetchName(selectedRecipient);
+      
+        if(result?.data){
+          console.log(result.data);
+          setButtonVisibility(false);
+          setChosenFriend(result.data);
+        
+    }
     }catch(error){
       setChosenFriend(`error: ${error}`)
     }
@@ -28,16 +51,17 @@ const MainPage = () => {
       {buttonVisibility && (
         <>
           <select  
-              className="bg-transparent border-2 border-[#2e2f29] rounded-full px-3 py-2"
-              id='jmeno'>
+              className="bg-transparent border-2 border-[#2e2f29] mb-8 rounded-full px-3 py-2"
+              value={selectedRecipient ?? ""}
+              onChange={(e) => setSelectedRecipient(e.target.value)}>
               <option value = ""> -- Vyber své jméno -- </option>
-              {/* {nazvyProvozu?.map((nazevProvozu, index)=>
+              {friendsList?.map((friend, index)=>
               (
-                <option key={index} value={nazevProvozu}> {nazevProvozu} </option>
-              ))} */}
+                <option key={index} value={friend.email}> {friend.name} </option>
+              ))}
               </select>
             <button
-              className="text-xl text-[#2e2f29] p-5 font-text font-semiboldlg:text-2xl
+              className="text-xl text-[#2e2f29] p-5 font-text font-semibold lg:text-2xl
                 hover:bg-[#2e2f29] rounded-full hover:text-white transition-colors duration-500"
                 onClick={getRandomFriend}
             >

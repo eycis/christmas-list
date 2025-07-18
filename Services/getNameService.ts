@@ -1,14 +1,21 @@
-export const  fetchName = async () : Promise<{data?: string, message?: string} | null> => {
+export const  fetchName = async (email: string) : Promise<{data?: string, message?: string} | null> => {
       try {
-        const response = await fetch("/api/fetch-name");
+        const response = await fetch("/api/fetch-name", {
+            method: "POST",
+            headers: {
+                "Content-Type" : "application/json",
+            },
+            body: JSON.stringify({email}),
+        });
+        
         const data = await response.json();
 
         if(!response.ok){
             console.error("response while fetching data");
             return {message: data.message}
         }
-    
-        return {data: data.name};
+
+        return {data: data.data};
     
         } catch(error){
             console.error("error while api call", error);
