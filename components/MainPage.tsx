@@ -10,17 +10,18 @@ const MainPage = () => {
   const [friendsList, setFriendsList] = useState<Friend[]>();
   const [selectedRecipient, setSelectedRecipient] = useState<string>();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getFriends();
-        if (data?.data) {
-          setFriendsList(data.data);
-        }
-      } catch (error) {
-        console.error('záznamy nenalezeny');
+  const fetchData = async () => {
+    try {
+      const data = await getFriends();
+      if (data?.data) {
+        setFriendsList(data.data);
       }
-    };
+    } catch (error) {
+      console.error('záznamy nenalezeny');
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
 
@@ -35,8 +36,10 @@ const MainPage = () => {
       if (result?.data) {
         setButtonVisibility(false);
         setChosenFriend(result.data);
+        
+        fetchData();
       }else{
-        window.alert("Všichni jsou již vylosováni!")
+        window.alert(`${result?.message}`)
       }
     } catch (error) {
       setChosenFriend(`error: ${error}`);

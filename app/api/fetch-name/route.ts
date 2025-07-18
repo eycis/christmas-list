@@ -16,11 +16,21 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: "Seznam je prázdný." }, { status: 404 });
         }
 
+        const currentUserSnapshot = await dbAdmin.collection("friends").where("email", "==", email).get();
+        
+        const currentUserDoc = currentUserSnapshot.docs[0];
+        const currentUser = currentUserDoc.data();
+
+        if (currentUser.hasName === true){
+          return NextResponse.json({message: "Už si losoval bro"}, {status: 403});
+        }
+
         const randomIndex = Math.floor(Math.random() * docs.length);
         const randomDoc = docs[randomIndex];
         const data = randomDoc.data();
 
         await dbAdmin.collection("friends").doc(randomDoc.id).update({selected: true});
+        await dbAdmin.collection("friends").doc(currentUserDoc.id).update({hasName: true});
 
         await sendEmail(email, data.name);
 

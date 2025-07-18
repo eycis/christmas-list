@@ -16,7 +16,7 @@ export const  fetchName = async (email: string) : Promise<{data?: string, messag
             return {message: data.message}
         }
 
-        return {data: data.data};
+        return {data: data.data, message: data?.message || ""};
     
         } catch(error){
             console.error("error while api call", error);
