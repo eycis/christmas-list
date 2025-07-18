@@ -24,7 +24,7 @@ const MainPage = () => {
         }
     };
     fetchData();
-  }, []);
+  },[]);
 
   const getRandomFriend = async() => {
     try{
